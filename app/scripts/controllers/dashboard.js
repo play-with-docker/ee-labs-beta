@@ -165,10 +165,15 @@ angular.module('yapp')
 
         case 'login':
           iframeIntro.addSteps([{
-            element: $('#login > div > div',c).get(0),
+            element: $('#login .form',c).get(0),
             intro: "log-in using <b>admin/admin1234</b>",
             position: 'top'
           }]);
+          $('#login .form',c).keypress(function(evt) {
+            if (evt.keyCode == 13) {
+              iframeIntro.nextStep();
+            }
+          });
           //elemService.onElementReady($('iframe').get(0).contentWindow,'.upload-section')
             //.then(function() {
               //var cw = $('iframe').get(0).contentWindow;
