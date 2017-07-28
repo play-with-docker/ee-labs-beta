@@ -21,11 +21,6 @@ gulp.task('jshint', function() {
     //.pipe($.jshint.reporter('fail'));
 });
 
-gulp.task('jscs', function() {
-  return gulp.src('app/scripts/**/*.js')
-    .pipe($.jscs());
-});
-
 gulp.task('html', ['styles'], function() {
   var lazypipe = require('lazypipe');
   var cssChannel = lazypipe()
@@ -36,12 +31,12 @@ gulp.task('html', ['styles'], function() {
 
   return gulp.src('app/**/*.html')
     .pipe(assets)
-    .pipe($.if('*.js', $.ngAnnotate()))
-    .pipe($.if('*.js', $.uglify()))
-    .pipe($.if('*.css', cssChannel()))
+    .pipe($.if('**/*.js', $.ngAnnotate()))
+    //.pipe($.if('**/*.js', $.uglify()))
+    .pipe($.if('**/*.css', cssChannel()))
     .pipe(assets.restore())
     .pipe($.useref())
-    .pipe($.if('*.html', $.minifyHtml({conditionals: true, loose: true})))
+    .pipe($.if('**/*.html', $.minifyHtml({conditionals: true, loose: true})))
     .pipe(gulp.dest('dist'));
 });
 
@@ -144,7 +139,7 @@ gulp.task('watch', ['connect'], function() {
   gulp.watch('bower.json', ['wiredep']);
 });
 
-gulp.task('builddist', ['jshint', 'jscs', 'html', 'images', 'fonts', 'extras'],
+gulp.task('builddist', ['jshint', 'html', 'images', 'fonts', 'extras'],
   function() {
   return gulp.src('dist/**/*').pipe($.size({title: 'build', gzip: true}));
 });
