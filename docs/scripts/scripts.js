@@ -100,7 +100,7 @@ angular.module('yapp')
       init: function(session) {
         // init the pwd session
         return  new Promise(function(resolve, reject) {
-          pwd.init(session.id, {baseUrl: 'http://'+ session.hostname, ImageName: 'franela/ucp:2.1.5'}, function() {
+          pwd.init(session.id, {baseUrl: 'http://'+ session.hostname, ImageName: 'franela/ucp:2.1.4'}, function() {
             resolve();
           });
         })
