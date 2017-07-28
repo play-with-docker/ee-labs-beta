@@ -5,13 +5,14 @@ angular.module('yapp')
     var p = {
 
       createSession: function(secret) {
+        var data = encodeURIComponent('g-recaptcha-response') + '=' + encodeURIComponent(secret);
         var req = {
           method: 'POST',
-          url: 'http://labs.play-with-docker.com',
+          url: 'http://localhost.com',
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
           },
-          data: window.encodeURIComponent(secret)
+          data: data
         };
         return $http(req).then(function(response) {
           let s = {id: response.data.session_id, hostname: response.data.hostname};
