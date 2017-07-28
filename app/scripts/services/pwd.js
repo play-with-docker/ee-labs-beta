@@ -7,7 +7,7 @@ angular.module('yapp')
       createSession: function(secret) {
         var req = {
           method: 'POST',
-          url: $location.protocol() + '://' + $rootScope.tld,
+          url: 'http://labs.play-with-docker.com',
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
           },
