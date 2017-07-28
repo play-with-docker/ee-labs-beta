@@ -37,7 +37,7 @@ gulp.task('html', ['styles'], function() {
     .pipe(assets.restore())
     .pipe($.useref())
     .pipe($.if('**/*.html', $.minifyHtml({conditionals: true, loose: true})))
-    .pipe(gulp.dest('dist'));
+    .pipe(gulp.dest('docs'));
 });
 
 gulp.task('images', function() {
@@ -46,7 +46,7 @@ gulp.task('images', function() {
     //   progressive: true,
     //   interlaced: true
     // })))
-    .pipe(gulp.dest('dist/images'));
+    .pipe(gulp.dest('docs/images'));
 });
 
 gulp.task('fonts', function() {
@@ -54,7 +54,7 @@ gulp.task('fonts', function() {
     .concat('bower_components/bootstrap/fonts/*'))
     .pipe($.filter('**/*.{eot,svg,ttf,woff,woff2}'))
     .pipe($.flatten())
-    .pipe(gulp.dest('dist/fonts'))
+    .pipe(gulp.dest('docs/fonts'))
     .pipe(gulp.dest('.tmp/fonts'));
 });
 
@@ -62,13 +62,13 @@ gulp.task('extras', function() {
   return gulp.src([
     'app/*.*',
     '!app/*.html',
-    'node_modules/apache-server-configs/dist/.htaccess'
+    'node_modules/apache-server-configs/docs/.htaccess'
   ], {
     dot: true
-  }).pipe(gulp.dest('dist'));
+  }).pipe(gulp.dest('docs'));
 });
 
-gulp.task('clean', require('del').bind(null, ['.tmp', 'dist']));
+gulp.task('clean', require('del').bind(null, ['.tmp', 'docs']));
 
 gulp.task('connect', ['styles'], function() {
   var serveStatic = require('serve-static');
@@ -141,7 +141,7 @@ gulp.task('watch', ['connect'], function() {
 
 gulp.task('builddist', ['jshint', 'html', 'images', 'fonts', 'extras'],
   function() {
-  return gulp.src('dist/**/*').pipe($.size({title: 'build', gzip: true}));
+  return gulp.src('docs/**/*').pipe($.size({title: 'build', gzip: true}));
 });
 
 gulp.task('build', ['clean'], function() {

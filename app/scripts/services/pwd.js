@@ -11,7 +11,7 @@ angular.module('yapp')
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
           },
-          data: secret
+          data: window.encodeURIComponent(secret)
         };
         return $http(req).then(function(response) {
           let s = {id: response.data.session_id, hostname: response.data.hostname};
