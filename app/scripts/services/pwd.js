@@ -29,8 +29,6 @@ angular.module('yapp')
         return $http.get($location.protocol() + '://' + session.hostname + '/sessions/' + session.id).then(function(response) {
           session.instances = response.data.instances;
           return session;
-        }, function() {
-          // TODO fail to get session
         });
       },
 
@@ -38,7 +36,7 @@ angular.module('yapp')
         return new Promise(function(resolve, reject) {
           pwd.exec(name, data, function(err) {
             if (err) {
-              console.log(err);
+              console.log('exec failed:', err);
               return reject(err);
             }
               return resolve();
@@ -55,7 +53,7 @@ angular.module('yapp')
         })
         .then(function() {
           if (Object.keys(session.instances).length == 0) {
-            waitingDialog.show('Loading, your session will be ready in a minute.');
+            waitingDialog.show('Please wait, your session will be ready in a minute.');
             let ucpInstance;
             // create UCP node
             return p.newInstance()

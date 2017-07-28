@@ -35,6 +35,7 @@ angular.module('yapp')
     $scope.$state = $state;
 
     pwdService.getSession().then(function(session) {
+      console.log(session);
       pwdService.init(session).then(function() {
         for (var i in session.instances) {
           let instance = session.instances[i];
@@ -55,15 +56,15 @@ angular.module('yapp')
 
     $scope.showInstance = function(instance) {
       $scope.selectedInstance = instance;
-      // create the term if it doesn't exist
-      if (!instance.term && !instance.url) {
-        // Wait for the DOM to be ready
-        $timeout(function(){
-          var terms = pwd.createTerminal({selector: '#term-'+ $scope.instances.indexOf(instance)}, instance.name);
-          // we'll handle one term per instance
-          instance.term = terms[0];
-        }, 0);
-      }
+      // Wait for the DOM to be ready
+      $timeout(function(){
+        // create the term if it doesn't exist
+        if (!instance.term && !instance.url) {
+            var terms = pwd.createTerminal({selector: '#term-'+ $scope.instances.indexOf(instance)}, instance.name);
+            // we'll handle one term per instance
+            instance.term = terms[0];
+        }
+      }, 0);
     };
 
     $scope.runTutorial = function(tutorial) {
@@ -161,7 +162,6 @@ angular.module('yapp')
       iframeIntro = introJs(c.body);
       iframeIntro.setOptions(introOptions);
 
-      console.log('Should populate steps for', id);
       switch (id) {
 
         case 'login':
@@ -186,7 +186,6 @@ angular.module('yapp')
 
 
         case 'access_service':
-          console.log($('table',c).get(0));
           iframeIntro.addSteps([
             {
               element: $('table',c).get(0),
