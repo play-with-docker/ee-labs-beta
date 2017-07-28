@@ -35,7 +35,6 @@ angular.module('yapp')
     $scope.$state = $state;
 
     pwdService.getSession().then(function(session) {
-      console.log(session.id);
       pwdService.init(session).then(function() {
         for (var i in session.instances) {
           let instance = session.instances[i];
@@ -49,6 +48,8 @@ angular.module('yapp')
         $scope.$apply();
         $scope.showInstance($scope.instances[0]);
       });
+    }, function(){
+      return $location.path('/login');
     });
 
 

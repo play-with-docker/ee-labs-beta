@@ -8,11 +8,17 @@
  * Controller of yapp
  */
 angular.module('yapp')
-  .controller('LoginCtrl', function($scope, $location) {
+  .controller('LoginCtrl', function($scope, $location, pwdService) {
 
-    $scope.submit = function() {
+    $scope.submit = function(form) {
 
-      $location.path('/dashboard');
+
+      if (form.$valid) {
+        pwdService.createSession($scope.recaptchaResponse)
+          .then(function(session) {
+            $location.path('/dashboard');
+          });
+      }
 
       return false;
     }

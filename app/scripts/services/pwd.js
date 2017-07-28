@@ -1,33 +1,37 @@
 'use strict';
 
 angular.module('yapp')
-  .factory('pwdService', function($http, $location){
+  .factory('pwdService', function($http, $location, $rootScope) {
     var p = {
 
-      getSession: function() {
-
-        // takes TLD from single dotted domains. ".co.uk" wouldn't work.
-        var tld = $location.host().split('.').slice(-2).join('.');
-        var newSession = function() {
-          return $http.post($location.protocol() + '://' + tld).then(function(response) {
-            let s = {id: response.data.session_id, hostname: response.data.hostname};
-            localStorage.setItem('session', JSON.stringify(s));
-            s.instances = {};
-            return s;
-          });
+      createSession: function(secret) {
+        var req = {
+          method: 'POST',
+          url: $location.protocol() + '://' + $rootScope.tld,
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          data: secret
         };
+        return $http(req).then(function(response) {
+          let s = {id: response.data.session_id, hostname: response.data.hostname};
+          localStorage.setItem('session', JSON.stringify(s));
+          s.instances = {};
+          return s;
+        });
+      },
 
+      getSession: function() {
         let session = JSON.parse(localStorage.getItem('session'));
-        if (session) {
-          return $http.get($location.protocol() + '://' + session.hostname + '/sessions/' + session.id).then(function(response) {
-            session.instances = response.data.instances;
-            return session;
-          }, function() {
-            return newSession();
-          });
-        } else {
-          return newSession();
+        if (!session) {
+          return new Promise(function(resolve,reject){reject()});
         }
+        return $http.get($location.protocol() + '://' + session.hostname + '/sessions/' + session.id).then(function(response) {
+          session.instances = response.data.instances;
+          return session;
+        }, function() {
+          // TODO fail to get session
+        });
       },
 
       exec: function(name, data) {
