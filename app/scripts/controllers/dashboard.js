@@ -26,10 +26,10 @@ angular.module('yapp')
     $scope.instances = [];
 
     $scope.tutorials = [
-      {name: "Log-in", id: 'login',  href:"#/login", element:'#login > div > div'},
-      {name: "Add node", id: 'add_node', href:"#/resources/nodes?page=1&count=25", element:'.negative'},
-      {name: "Deploy service", id: 'deploy_service', href:"#/resources/applications?page=1&count=10", element:'[data-title="\'Volumes\'"]'},
-      {name: "Access service", id: 'access_service', href:"#/resources/services?page=1&count=25", element:'[data-title="\'Name\'"]'}
+      {name: "Log-in", id: 'login',  href:"/#/login", element:'#login > div > div'},
+      {name: "Add node", id: 'add_node', href:"/#/resources/nodes?page=1&count=25", element:'.negative'},
+      {name: "Deploy service", id: 'deploy_service', href:"/#/resources/applications?page=1&count=10", element:'[data-title="\'Volumes\'"]'},
+      {name: "Access service", id: 'access_service', href:"/#/resources/services?page=1&count=25", element:'[data-title="\'Name\'"]'}
     ];
 
     $scope.$state = $state;
@@ -69,14 +69,12 @@ angular.module('yapp')
 
     $scope.runTutorial = function(tutorial) {
       var cw = $('iframe').get(0).contentWindow;
-      cw.setTimeout(function() {
-        //change url we need to
+        //change url  need to
         if (tutorial.href) {
-          cw.location.href=tutorial.href;
+          cw.location.href= cw.location.origin + tutorial.href;
         }
         $scope.currentTutorial = tutorial;
         startTour(tutorial.id);
-      });
     };
 
     $scope.onFrameLoad = function() {
