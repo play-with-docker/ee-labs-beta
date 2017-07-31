@@ -68,7 +68,7 @@ gulp.task('extras', function() {
   }).pipe(gulp.dest('docs'));
 });
 
-gulp.task('clean', require('del').bind(null, ['.tmp', 'docs']));
+gulp.task('clean', require('del').bind(null, ['.tmp', 'docs/**/*', '!docs/CNAME']));
 
 gulp.task('connect', ['styles'], function() {
   var serveStatic = require('serve-static');
