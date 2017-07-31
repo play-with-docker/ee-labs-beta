@@ -332,9 +332,7 @@ angular.module('yapp')
           ]);
           iframeIntro.oncomplete(function() {
             var cw = $('iframe').get(0).contentWindow;
-            cw.setTimeout(function() {
-              cw.location.href="#/dashboard";
-            });
+              cw.location.href= cw.location.origin + '#/dashboard';
           });
           break;
 
