@@ -79,6 +79,14 @@ angular.module('yapp')
     };
 
     $scope.onFrameLoad = function() {
+      mainIntro.addSteps([
+        {
+          element: $('h3').get(0),
+          intro: "Check the interactive tutorials",
+          position: 'right'
+        }
+      ]);
+      mainIntro.start();
     };
 
 
