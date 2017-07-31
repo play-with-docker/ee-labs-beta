@@ -60,7 +60,7 @@ angular.module('yapp')
         var data = encodeURIComponent('g-recaptcha-response') + '=' + encodeURIComponent(secret);
         var req = {
           method: 'POST',
-          url: 'http://labs.play-with-docker.com',
+          url: 'http://localhost.com',
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
           },
@@ -336,7 +336,7 @@ angular.module('yapp')
     };
 
     $scope.tourSteps = function(id) {
-      var c = $('iframe').contents()[0];
+      var c = $('iframe').get(0).contentWindow.document;
       iframeIntro = introJs(c.body);
       iframeIntro.setOptions(introOptions);
 

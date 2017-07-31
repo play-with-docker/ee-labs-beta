@@ -158,7 +158,7 @@ angular.module('yapp')
     };
 
     $scope.tourSteps = function(id) {
-      var c = $('iframe').contents()[0];
+      var c = $('iframe').get(0).contentWindow.document;
       iframeIntro = introJs(c.body);
       iframeIntro.setOptions(introOptions);
 
