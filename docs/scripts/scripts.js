@@ -60,7 +60,7 @@ angular.module('yapp')
         var data = encodeURIComponent('g-recaptcha-response') + '=' + encodeURIComponent(secret);
         var req = {
           method: 'POST',
-          url: 'http://localhost.com',
+          url: 'http://labs.play-with-docker.com',
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
           },
