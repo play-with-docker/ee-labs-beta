@@ -257,64 +257,6 @@ angular.module('yapp')
     };
 
     $scope.onFrameLoad = function() {
-      // add mainIntro steps;
-      mainIntro.addSteps([
-        {
-          element: $('.sidebar .btn').get(0),
-          intro: "Let's create a new instance"
-        },
-        {
-          element: $('.nav-sidebar').get(0),
-          intro: 'Select the newly created instance'
-        },
-        {
-          element: $('.jumbotron').get(0),
-          intro: 'Paste the token by using your mouse <b>right</b> click and press enter',
-          position: 'left',
-          showNext: true
-        },
-        {
-          element: $('.nav-sidebar').get(0),
-          intro: 'Go back to node1',
-        },
-        {
-          element: $('jumbotron').get(0),
-          intro: "Congratulations!, you've added a second node to your swarm cluster!. You can check the status of your cluster nodes or add/remove them  on this screen" ,
-        }
-      ]);
-
-      mainIntro.onchange(function(step) {
-        switch (this._currentStep) {
-          case 0:
-            step.onclick = function() {
-              $scope.$on('newInstance', function() {
-                mainIntro.nextStep();
-                step.onclick = undefined;
-              });
-            };
-            break;
-
-          case 1:
-            step.onclick = function() {
-              mainIntro.nextStep();
-              step.onclick = undefined;
-            };
-            break;
-
-          // going back to deploy screen
-          case 3:
-            step.onclick = function() {
-              // change iframe url to deploy a new app
-              var cw = $('iframe').get(0).contentWindow;
-              cw.setTimeout(function() {
-                cw.location.href="#/resources/nodes";
-              });
-              mainIntro.exit();
-              step.onclick = undefined;
-            };
-            break;
-        }
-      });
     };
 
 
@@ -417,6 +359,63 @@ angular.module('yapp')
             }
           });
           iframeIntro.oncomplete(function() {
+            mainIntro.addSteps([
+              {
+                element: $('.sidebar .btn').get(0),
+                intro: "Let's create a new instance"
+              },
+              {
+                element: $('.nav-sidebar').get(0),
+                intro: 'Select the newly created instance'
+              },
+              {
+                element: $('.jumbotron').get(0),
+                intro: 'Paste the token by using your mouse <b>right</b> click and press enter',
+                position: 'left',
+                showNext: true
+              },
+              {
+                element: $('.nav-sidebar').get(0),
+                intro: 'Go back to node1',
+              },
+              {
+                element: $('jumbotron').get(0),
+                intro: "Congratulations!, you've added a second node to your swarm cluster!. You can check the status of your cluster nodes or add/remove them  on this screen" ,
+              }
+            ]);
+
+            mainIntro.onchange(function(step) {
+              switch (this._currentStep) {
+                case 0:
+                  step.onclick = function() {
+                    $scope.$on('newInstance', function() {
+                      mainIntro.nextStep();
+                      step.onclick = undefined;
+                    });
+                  };
+                  break;
+
+                case 1:
+                  step.onclick = function() {
+                    mainIntro.nextStep();
+                    step.onclick = undefined;
+                  };
+                  break;
+
+                // going back to deploy screen
+                case 3:
+                  step.onclick = function() {
+                    // change iframe url to deploy a new app
+                    var cw = $('iframe').get(0).contentWindow;
+                    cw.setTimeout(function() {
+                      cw.location.href="#/resources/nodes";
+                    });
+                    mainIntro.exit();
+                    step.onclick = undefined;
+                  };
+                  break;
+              }
+            });
             mainIntro.start();
           });
           break;
