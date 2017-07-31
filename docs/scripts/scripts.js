@@ -247,6 +247,7 @@ angular.module('yapp')
 
     $scope.runTutorial = function(tutorial) {
       var cw = $('iframe').get(0).contentWindow;
+
         //change url  need to
         if (tutorial.href) {
           cw.location.href= cw.location.origin + tutorial.href;
