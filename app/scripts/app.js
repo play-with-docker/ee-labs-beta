@@ -12,9 +12,7 @@ angular
   .module('yapp', [
     'ui.router',
     'ngAnimate',
-    'ngUrlParser',
-    'vcRecaptcha',
-    'ngOnload'
+    'ngUrlParser'
   ])
   .config(function($sceDelegateProvider) {
     $sceDelegateProvider.resourceUrlWhitelist(['**']);

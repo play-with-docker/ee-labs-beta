@@ -8,7 +8,7 @@ angular.module('yapp')
         var data = encodeURIComponent('g-recaptcha-response') + '=' + encodeURIComponent(secret);
         var req = {
           method: 'POST',
-          url: 'http://labs.play-with-docker.com',
+          url: 'https://microsoft.play-with-docker.com',
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
           },
@@ -27,7 +27,7 @@ angular.module('yapp')
         if (!session) {
           return new Promise(function(resolve,reject){reject()});
         }
-        return $http.get($location.protocol() + '://' + session.hostname + '/sessions/' + session.id).then(function(response) {
+        return $http.get('https' + '://' + session.hostname + '/sessions/' + session.id).then(function(response) {
           session.instances = response.data.instances;
           return session;
         });
@@ -45,53 +45,40 @@ angular.module('yapp')
         });
       },
 
-      init: function(session) {
+      init: function(session, data) {
         // init the pwd session
         return  new Promise(function(resolve, reject) {
-          pwd.init(session.id, {baseUrl: 'http://'+ session.hostname, ImageName: 'franela/ucp:2.1.5'}, function() {
-            resolve();
-          });
-        })
-        .then(function() {
-          if (Object.keys(session.instances).length == 0) {
-            waitingDialog.show('Please wait, your session will be ready in a minute.');
-            let ucpInstance;
-            // create UCP node
-            return p.newInstance()
-              .then(function(instance) {
-                session.instances[instance.name] = instance;
-                ucpInstance = instance;
-                var ucp_cmd = [
-                  '/deployucp.sh'
-                ];
+          pwd.init(session.id, {baseUrl: 'https://'+ session.hostname}, function() {
+            if (Object.keys(session.instances).length == 0) {
+              waitingDialog.show('Please wait, your session will be ready in a few minutes.');
+              let ucpInstance;
+              // setup session and retrieve updated session
+              p.setup(data).then(function() {
+                return p.getSession().then(function(updatedSession) {
+                  session.instances = updatedSession.instances;
 
-                return p.exec(ucpInstance.name, ucp_cmd).then(function(){
+                  // TODO decide if this needs to be within the SDK or not,
+                  // but it's not pretty to handle it this way
+                  pwd.instances = updatedSession.instances;
+
                   waitingDialog.hide();
+                  resolve();
                 });
-
               });
-              // DTR stuff
-              //.then(function() {
-                 //create DTR node
-                //return p.newInstance()
-                  //.then(function(instance) {
-                    //session.instances[instance.name] = instance;
-                     //setup UCP and DTR
-                  //});
-              //});
             } else {
-              return new Promise(function(resolve, reject){resolve()});
+              resolve();
             }
+          });
         });
       },
 
-      newInstance: function() {
+      setup: function(data) {
         return new Promise(function(resolve, reject) {
-          pwd.createInstance(function(err, instance) {
+          pwd.setup(data, function(err) {
             if (err) {
               return reject(err);
             }
-              return resolve(instance);
+              return resolve();
           });
         });
       }

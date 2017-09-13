@@ -14,7 +14,7 @@ angular.module('yapp')
 
 
       if (form.$valid) {
-        pwdService.createSession($scope.recaptchaResponse)
+        pwdService.createSession()
           .then(function(session) {
             $location.path('/dashboard');
           });
