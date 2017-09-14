@@ -51,6 +51,7 @@ gulp.task('images', function() {
 
 gulp.task('fonts', function() {
   return gulp.src(require('main-bower-files')().concat('app/fonts/**/*')
+    .concat('bower_components/font-awesome/fonts/*')
     .concat('bower_components/bootstrap/fonts/*'))
     .pipe($.filter('**/*.{eot,svg,ttf,woff,woff2}'))
     .pipe($.flatten())
@@ -68,7 +69,7 @@ gulp.task('extras', function() {
   }).pipe(gulp.dest('docs'));
 });
 
-gulp.task('clean', require('del').bind(null, ['.tmp', 'docs/**/*', '!docs/CNAME']));
+gulp.task('clean', require('del').bind(null, ['.tmp', 'docs/**/*', '!docs/CNAME', '!docs/favicon.ico']));
 
 gulp.task('connect', ['styles'], function() {
   var serveStatic = require('serve-static');
