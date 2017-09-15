@@ -13,8 +13,8 @@ angular.module('yapp')
     $scope.instances = [];
 
     $scope.$state = $state;
-    $scope.dtrUrl=""
-    $scope.ucpUrl=""
+    $scope.dtrHost=""
+    $scope.ucpHost=""
 
     pwdService.getSession().then(function(session) {
       console.log(session);
@@ -30,9 +30,9 @@ angular.module('yapp')
         for (var i in session.instances) {
           let instance = session.instances[i];
           if (instance.hostname == "manager1") {
-            $scope.ucpUrl = 'https://' + instance.proxy_host + '.direct.' + session.hostname;
+            $scope.ucpHost = instance.proxy_host + '.direct.' + session.hostname;
           } else if (instance.hostname == "worker1") {
-            $scope.dtrUrl = 'https://' + instance.proxy_host + '.direct.' + session.hostname;
+            $scope.dtrHost = instance.proxy_host + '.direct.' + session.hostname;
           }
           $scope.instances.push(instance);
         }
@@ -44,12 +44,12 @@ angular.module('yapp')
     });
 
     $scope.openDTR = function() {
-      $window.open($scope.dtrUrl, '_blank');
+      $window.open('https://' + $scope.dtrHost, '_blank');
     }
 
 
     $scope.openUCP = function() {
-      $window.open($scope.ucpUrl, '_blank');
+      $window.open('https://' + $scope.ucpHost, '_blank');
     }
 
     $scope.showInstance = function(instance) {
