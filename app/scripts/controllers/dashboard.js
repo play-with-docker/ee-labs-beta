@@ -20,8 +20,10 @@ angular.module('yapp')
       console.log(session);
       var sessionSetup = {
         "instances": [
-            {"hostname": "manager1", "is_swarm_manager": true, "run": [["sh", "-c", "ucp.sh deploy worker1 2> /error.log"]]},
-            {"hostname": "worker1", "is_swarm_worker": true, "run": [["sh", "-c", "ucp.sh setup-certs worker1"]]}
+            {"hostname": "manager1", "is_swarm_manager": true, "run": [["sh", "-c", "ucp.sh deploy worker1 2> /ucp.log"]]},
+            {"hostname": "worker1", "is_swarm_worker": true, "run": [["sh", "-c", "ucp.sh setup-certs worker1"]]},
+            {"type":"windows", "run": [["powershell", "-File", "c:/windows/system32/copy_certs.ps1", "-Node", "worker1", "-SessionId", session.id, "-FQDN", session.hostname]]}
+
         ]
       };
       pwdService.init(session,sessionSetup).then(function() {
