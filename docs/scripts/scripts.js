@@ -178,6 +178,7 @@ angular.module('yapp')
     $scope.$state = $state;
     $scope.dtrHost=""
     $scope.ucpHost=""
+    $scope.winHost=""
 
     pwdService.getSession().then(function(session) {
       console.log(session);
@@ -196,6 +197,8 @@ angular.module('yapp')
             $scope.ucpHost = instance.proxy_host + '.direct.' + session.hostname;
           } else if (instance.hostname == "worker1") {
             $scope.dtrHost = instance.proxy_host + '.direct.' + session.hostname;
+          } else if (instance.type == "windows") {
+            $scope.winHost = instance.proxy_host + '.direct.' + session.hostname;
           }
           $scope.instances.push(instance);
         }
