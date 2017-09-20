@@ -26,6 +26,7 @@ angular.module('yapp')
           return new Promise(function(resolve,reject){reject()});
         }
         return $http.get('https://microsoft.play-with-docker.com' + '/sessions/' + sessionId).then(function(response) {
+          response.data.hostname = "microsoft.play-with-docker.com";
           return response.data;
         });
       },
