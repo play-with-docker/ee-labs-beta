@@ -43,6 +43,7 @@ angular.module('yapp')
         $scope.showInstance($scope.instances[0]);
       });
     }, function(){
+      $location.hash('');
       return $location.path('/login');
     });
 

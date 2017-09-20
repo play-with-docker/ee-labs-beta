@@ -65,21 +65,18 @@ angular.module('yapp')
           data: data
         };
         return $http(req).then(function(response) {
-          let s = {id: response.data.session_id, hostname: response.data.hostname};
-          localStorage.setItem('session', JSON.stringify(s));
-          s.instances = {};
-          return s;
+          $location.hash(response.data.session_id)
+          return response.data;
         });
       },
 
       getSession: function() {
-        let session = JSON.parse(localStorage.getItem('session'));
-        if (!session) {
+        let sessionId = $location.hash();
+        if (!sessionId) {
           return new Promise(function(resolve,reject){reject()});
         }
-        return $http.get('https' + '://' + session.hostname + '/sessions/' + session.id).then(function(response) {
-          session.instances = response.data.instances;
-          return session;
+        return $http.get('https://microsoft.play-with-docker.com' + '/sessions/' + sessionId).then(function(response) {
+          return response.data;
         });
       },
 
@@ -98,7 +95,7 @@ angular.module('yapp')
       init: function(session, data) {
         // init the pwd session
         return  new Promise(function(resolve, reject) {
-          pwd.init(session.id, {baseUrl: 'https://'+ session.hostname}, function() {
+          pwd.init(session.id, {baseUrl: 'https://microsoft.play-with-docker.com'}, function() {
             if (Object.keys(session.instances).length == 0) {
               waitingDialog.show('Please wait, your session will be ready in a few minutes.');
               let ucpInstance;
@@ -209,6 +206,7 @@ angular.module('yapp')
         $scope.showInstance($scope.instances[0]);
       });
     }, function(){
+      $location.hash('');
       return $location.path('/login');
     });
 
