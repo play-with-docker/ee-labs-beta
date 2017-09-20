@@ -230,6 +230,10 @@ angular.module('yapp')
             var terms = pwd.createTerminal({selector: '#term-'+ $scope.instances.indexOf(instance)}, instance.name);
             // we'll handle one term per instance
             instance.term = terms[0];
+            $timeout(function(){
+              // fit the term after it's rendered
+              instance.term.fit();
+            }, 0);
         }
       }, 0);
     };
