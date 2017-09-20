@@ -114,6 +114,9 @@ angular.module('yapp')
                   waitingDialog.hide();
                   resolve();
                 });
+              }, function() {
+                  waitingDialog.message('Error provisiong session, please refresh to start over.');
+                  localStorage.clear();
               });
             } else {
               resolve();
