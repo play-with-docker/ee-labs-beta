@@ -9,6 +9,8 @@
  */
 angular.module('yapp')
   .controller('LoginCtrl', function($scope, $location, pwdService) {
+    // If there's a dialog open, hide it;
+    waitingDialog.hide();
 
     $scope.submit = function(form) {
 

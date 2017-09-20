@@ -62,8 +62,7 @@ angular.module('yapp')
                   resolve();
                 });
               }, function() {
-                  waitingDialog.message('Error provisiong session, please refresh to start over.');
-                  localStorage.clear();
+                  waitingDialog.message('Error provisiong session, click <a href="#!/login">here</a> to start over.');
               });
             } else {
               resolve();

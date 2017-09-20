@@ -112,8 +112,7 @@ angular.module('yapp')
                   resolve();
                 });
               }, function() {
-                  waitingDialog.message('Error provisiong session, please refresh to start over.');
-                  localStorage.clear();
+                  waitingDialog.message('Error provisiong session, click <a href="#!/login">here</a> to start over.');
               });
             } else {
               resolve();
@@ -249,6 +248,8 @@ angular.module('yapp')
  */
 angular.module('yapp')
   .controller('LoginCtrl', ["$scope", "$location", "pwdService", function($scope, $location, pwdService) {
+    // If there's a dialog open, hide it;
+    waitingDialog.hide();
 
     $scope.submit = function(form) {
 
