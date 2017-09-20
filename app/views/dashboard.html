@@ -19,6 +19,11 @@
             </div>
             <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
                 <div class="jumbotron">
+                    <div ng-repeat="instance in instances"  ng-show="selectedInstance == instance" class="container-fluid">
+                        <div ng-show="!instance.url" id="term-{{$index}}"></div>
+                    </div>
+                </div>
+                <div class="jumbotron">
                     <div class="panel panel-info">
                         <div class="panel-heading">
                             <h3 class="panel-title">
@@ -45,11 +50,6 @@
                                 </div>
                             </form>
                         </div>
-                    </div>
-                </div>
-                <div class="jumbotron">
-                    <div ng-repeat="instance in instances"  ng-show="selectedInstance == instance" class="container-fluid">
-                        <div ng-show="! instance.url" style="height: 800px;" id="term-{{$index}}"></div>
                     </div>
                 </div>
             </div>
