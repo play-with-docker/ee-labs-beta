@@ -17,11 +17,10 @@ angular
   .config(function($sceDelegateProvider) {
     $sceDelegateProvider.resourceUrlWhitelist(['**']);
   })
-  .config(function($stateProvider, $urlRouterProvider, $httpProvider) {
+  .config(function($stateProvider, $urlRouterProvider, $httpProvider, $locationProvider) {
 
+    $locationProvider.html5Mode({enabled: true, requireBase: false}).hashPrefix("!");
     $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-
-    $urlRouterProvider.otherwise('/dashboard');
 
     $stateProvider
       .state('base', {
@@ -29,14 +28,8 @@ angular
         url: '',
         templateUrl: 'views/base.html'
       })
-        .state('login', {
-          url: '/login',
-          parent: 'base',
-          templateUrl: 'views/login.html',
-          controller: 'LoginCtrl'
-        })
         .state('dashboard', {
-          url: '/dashboard',
+          url: '/:sessionId',
           parent: 'base',
           templateUrl: 'views/dashboard.html',
           controller: 'DashboardCtrl'

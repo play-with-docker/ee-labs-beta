@@ -18,7 +18,6 @@ angular.module('yapp')
     $scope.winHost=""
 
     pwdService.getSession().then(function(session) {
-      console.log(session);
       var sessionSetup = {
         "instances": [
             {"hostname": "manager1", "is_swarm_manager": true, "run": [["sh", "-c", "ucp.sh deploy worker1 2> /ucp.log"]]},
@@ -43,8 +42,7 @@ angular.module('yapp')
         $scope.showInstance($scope.instances[0]);
       });
     }, function(){
-      $location.hash('');
-      return $location.path('/login');
+      return $location.path('/');
     });
 
     $scope.openDTR = function() {

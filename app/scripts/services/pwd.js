@@ -21,7 +21,7 @@ angular.module('yapp')
       },
 
       getSession: function() {
-        let sessionId = $location.hash();
+        var sessionId = $location.path().replace('/','');
         if (!sessionId) {
           return new Promise(function(resolve,reject){reject()});
         }
@@ -63,7 +63,7 @@ angular.module('yapp')
                   resolve();
                 });
               }, function() {
-                  waitingDialog.message('Error provisiong session, click <a href="#!/login">here</a> to start over.');
+                  waitingDialog.message('Error provisiong session, click <a href="/">here</a> to start over.');
               });
             } else {
               resolve();
