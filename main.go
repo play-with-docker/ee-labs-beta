@@ -2,6 +2,7 @@ package main
 
 import (
 	"crypto/tls"
+	"encoding/json"
 	"flag"
 	"fmt"
 	"log"
@@ -31,6 +32,9 @@ func main() {
 
 	r := mux.NewRouter()
 	r.HandleFunc("/ping", Ping).Methods("GET")
+	r.HandleFunc("/", AssignPreprovisionedSession).Methods("GET")
+	r.HandleFunc("/{sessionId}", showSession).Methods("GET")
+	r.PathPrefix("/").Handler(http.FileServer(http.Dir("./docs"))).Methods("GET")
 
 	n := negroni.Classic()
 	n.UseHandler(r)
@@ -75,4 +79,40 @@ func main() {
 }
 
 func Ping(rw http.ResponseWriter, req *http.Request) {
+}
+
+func showSession(rw http.ResponseWriter, req *http.Request) {
+	http.ServeFile(rw, req, "./docs/index.html")
+}
+func AssignPreprovisionedSession(rw http.ResponseWriter, req *http.Request) {
+	var sessionId string
+
+	sessionCreateResponse := struct {
+		SessionId string `json:"session_id"`
+	}{}
+
+	req, err := http.NewRequest("POST", "https://microsoft.play-with-docker.com/pre/sessions", nil)
+	res, err := http.DefaultClient.Do(req)
+	if err != nil {
+		rw.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	if res.StatusCode != 503 {
+		json.NewDecoder(res.Body).Decode(&sessionCreateResponse)
+		sessionId = sessionCreateResponse.SessionId
+	}
+
+	if sessionId == "" {
+		req, err := http.NewRequest("POST", "https://microsoft.play-with-docker.com", nil)
+		req.Header.Add("X-Requested-With", "XMLHttpRequest")
+		res, err := http.DefaultClient.Do(req)
+		if err != nil {
+			rw.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+		err = json.NewDecoder(res.Body).Decode(&sessionCreateResponse)
+		sessionId = sessionCreateResponse.SessionId
+	}
+
+	http.Redirect(rw, req, "/"+sessionId, http.StatusFound)
 }
