@@ -41,8 +41,8 @@ angular.module('yapp')
         $scope.$apply();
         $scope.showInstance($scope.instances[0]);
       });
-    }, function(){
-      return $location.path('/');
+    }, function() {
+      window.location.href = 'https://goto.docker.com/2017PWDonMicrosoftAzure_MTALP.html';
     });
 
     $scope.openDTR = function() {

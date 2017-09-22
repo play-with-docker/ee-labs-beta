@@ -85,6 +85,10 @@ func showSession(rw http.ResponseWriter, req *http.Request) {
 	http.ServeFile(rw, req, "./docs/index.html")
 }
 func AssignPreprovisionedSession(rw http.ResponseWriter, req *http.Request) {
+	if aliId := req.URL.Query().Get("aliId"); aliId == "" {
+		http.Redirect(rw, req, "https://goto.docker.com/2017PWDonMicrosoftAzure_MTALP.html", http.StatusFound)
+		return
+	}
 	var sessionId string
 
 	sessionCreateResponse := struct {
