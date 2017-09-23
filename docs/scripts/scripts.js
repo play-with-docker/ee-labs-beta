@@ -17,11 +17,10 @@ angular
   .config(["$sceDelegateProvider", function($sceDelegateProvider) {
     $sceDelegateProvider.resourceUrlWhitelist(['**']);
   }])
-  .config(["$stateProvider", "$urlRouterProvider", "$httpProvider", function($stateProvider, $urlRouterProvider, $httpProvider) {
+  .config(["$stateProvider", "$urlRouterProvider", "$httpProvider", "$locationProvider", function($stateProvider, $urlRouterProvider, $httpProvider, $locationProvider) {
 
+    $locationProvider.html5Mode({enabled: true, requireBase: false}).hashPrefix("!");
     $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-
-    $urlRouterProvider.otherwise('/dashboard');
 
     $stateProvider
       .state('base', {
@@ -29,14 +28,8 @@ angular
         url: '',
         templateUrl: 'views/base.html'
       })
-        .state('login', {
-          url: '/login',
-          parent: 'base',
-          templateUrl: 'views/login.html',
-          controller: 'LoginCtrl'
-        })
         .state('dashboard', {
-          url: '/dashboard',
+          url: '/:sessionId',
           parent: 'base',
           templateUrl: 'views/dashboard.html',
           controller: 'DashboardCtrl'
@@ -71,7 +64,7 @@ angular.module('yapp')
       },
 
       getSession: function() {
-        let sessionId = $location.hash();
+        var sessionId = $location.path().replace('/','');
         if (!sessionId) {
           return new Promise(function(resolve,reject){reject()});
         }
@@ -113,7 +106,7 @@ angular.module('yapp')
                   resolve();
                 });
               }, function() {
-                  waitingDialog.message('Error provisiong session, click <a href="#!/login">here</a> to start over.');
+                  waitingDialog.message('Error provisiong session, click <a href="/">here</a> to start over.');
               });
             } else {
               resolve();
@@ -181,7 +174,6 @@ angular.module('yapp')
     $scope.winHost=""
 
     pwdService.getSession().then(function(session) {
-      console.log(session);
       var sessionSetup = {
         "instances": [
             {"hostname": "manager1", "is_swarm_manager": true, "run": [["sh", "-c", "ucp.sh deploy worker1 2> /ucp.log"]]},
@@ -205,9 +197,8 @@ angular.module('yapp')
         $scope.$apply();
         $scope.showInstance($scope.instances[0]);
       });
-    }, function(){
-      $location.hash('');
-      return $location.path('/login');
+    }, function() {
+      window.location.href = 'https://goto.docker.com/2017PWDonMicrosoftAzure_MTALP.html';
     });
 
     $scope.openDTR = function() {
