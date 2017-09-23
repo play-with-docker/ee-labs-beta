@@ -11,7 +11,6 @@
   "devDependencies": {
     "apache-server-configs": "^2.11.0",
     "chai": "^2.1.0",
-    "connect": "^3.3.4",
     "connect-livereload": "^0.5.3",
     "del": "^1.1.1",
     "gulp": "^3.8.11",
@@ -48,7 +47,8 @@
     "serve-index": "^1.6.2",
     "serve-static": "^1.9.1",
     "wiredep": "^2.2.2",
-    "yargs": "^3.3.1"
+    "yargs": "^3.3.1",
+    "express": "^4.15.4"
   },
   "dependencies": {}
 }

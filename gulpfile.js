@@ -73,15 +73,13 @@ gulp.task('clean', require('del').bind(null, ['.tmp', 'docs/**/*', '!docs/CNAME'
 
 gulp.task('connect', ['styles'], function() {
   var serveStatic = require('serve-static');
-  var serveIndex = require('serve-index');
-  var app = require('connect')()
-    .use(require('connect-livereload')({port: 35729}))
-    .use(serveStatic('.tmp'))
-    .use(serveStatic('app'))
+  var app = require('express')()
+    .use('/bower_components', serveStatic('bower_components'))
+    .use('/', serveStatic(__dirname + '/.tmp', {redirect: false, fallthrough: true}))
+    .use('/', serveStatic(__dirname + '/app', {redirect: false, fallthrough: true}))
+    .use('/:sessionId', function(req, res) {res.sendFile(__dirname + '/app/index.html')});
     // paths to bower_components should be relative to the current file
     // e.g. in app/index.html you should use ../bower_components
-    .use('/bower_components', serveStatic('bower_components'))
-    .use(serveIndex('app'));
 
   require('http').createServer(app)
     .listen(9000)
