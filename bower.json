@@ -17,13 +17,13 @@
     "angular-mocks": "~1.3.0"
   },
   "resolutions": {
-    "angular": "1.3.14"
+    "angular": "^1.6.5"
   },
-  "overrides":{
+  "overrides": {
     "font-awesome": {
-        "main": [
-            "css/font-awesome.min.css"
-        ]
+      "main": [
+        "css/font-awesome.min.css"
+      ]
     }
   }
 }
