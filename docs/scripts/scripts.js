@@ -44,7 +44,6 @@ angular
   .run(["$location", "$rootScope", function($location, $rootScope){
     // takes TLD from single dotted domains. ".co.uk" wouldn't work.
     $rootScope.tld = $location.host().split('.').slice(-2).join('.');
-    document.domain = $rootScope.tld;
   }]);
 
 'use strict';
