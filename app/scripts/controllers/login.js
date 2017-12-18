@@ -9,20 +9,12 @@
  */
 angular.module('yapp')
   .controller('LoginCtrl', function($scope, $location, pwdService) {
-    // If there's a dialog open, hide it;
-    waitingDialog.hide();
-
-    $scope.submit = function(form) {
 
 
-      if (form.$valid) {
-        pwdService.createSession()
-          .then(function(session) {
-            $location.path('/dashboard');
-          });
-      }
-
-      return false;
-    }
-
+    pwdService.assignSession()
+      .then(function(sessionId) {
+        $location.path('/'+sessionId);
+      }, function() {
+        waitingDialog.show('No more sessions available');
+      });
   });

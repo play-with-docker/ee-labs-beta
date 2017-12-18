@@ -2,7 +2,6 @@
 'use strict';
 
 var gulp = require('gulp');
-var karma = require('karma').server;
 var argv = require('yargs').argv;
 var $ = require('gulp-load-plugins')();
 
@@ -94,12 +93,6 @@ gulp.task('serve', ['wiredep', 'connect', 'fonts', 'watch'], function() {
   }
 });
 
-gulp.task('test', function(done) {
-  karma.start({
-    configFile: __dirname + '/test/karma.conf.js',
-    singleRun: true
-  }, done);
-});
 
 // inject bower components
 gulp.task('wiredep', function() {

@@ -18,23 +18,13 @@ angular.module('yapp')
     $scope.winHost=""
 
     pwdService.getSession().then(function(session) {
-      var sessionSetup = {
-        "instances": [
-            {"hostname": "manager1", "is_swarm_manager": true, "run": [["sh", "-c", "ucp.sh deploy worker1 2> /ucp.log"]]},
-            {"hostname": "worker1", "is_swarm_worker": true, "run": [["sh", "-c", "ucp.sh setup-certs worker1"]]},
-            {"type":"windows", "run": [["powershell", "-File", "c:/windows/system32/copy_certs.ps1", "-Node", "worker1", "-SessionId", session.id, "-FQDN", session.hostname]]}
-
-        ]
-      };
-      pwdService.init(session,sessionSetup).then(function() {
+      pwdService.init(session).then(function() {
         for (var i in session.instances) {
           let instance = session.instances[i];
           if (instance.hostname == "manager1") {
             $scope.ucpHost = instance.proxy_host + '.direct.' + session.hostname;
           } else if (instance.hostname == "worker1") {
             $scope.dtrHost = instance.proxy_host + '.direct.' + session.hostname;
-          } else if (instance.type == "windows") {
-            $scope.winHost = instance.proxy_host + '.direct.' + session.hostname;
           }
           $scope.instances.push(instance);
         }
@@ -42,7 +32,7 @@ angular.module('yapp')
         $scope.showInstance($scope.instances[0]);
       });
     }, function() {
-      window.location.href = 'https://goto.docker.com/2017PWDonMicrosoftAzure_MTALP.html';
+      //$location.path('/')
     });
 
     $scope.openDTR = function() {

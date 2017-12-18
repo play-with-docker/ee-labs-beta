@@ -28,6 +28,12 @@ angular
         url: '',
         templateUrl: 'views/base.html'
       })
+        .state('login', {
+          url: '/',
+          parent: 'base',
+          templateUrl: 'views/login.html',
+          controller: 'LoginCtrl'
+        })
         .state('dashboard', {
           url: '/:sessionId',
           parent: 'base',
