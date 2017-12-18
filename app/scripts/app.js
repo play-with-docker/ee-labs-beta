@@ -18,7 +18,7 @@ angular
   })
   .config(function($stateProvider, $urlRouterProvider, $httpProvider, $locationProvider) {
 
-    //$locationProvider.html5Mode({enabled: true, requireBase: false}).hashPrefix("!");
+    $locationProvider.html5Mode({enabled: true, requireBase: false}).hashPrefix("!");
     $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
     $stateProvider
