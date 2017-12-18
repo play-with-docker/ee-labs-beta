@@ -11,8 +11,7 @@
 angular
   .module('yapp', [
     'ui.router',
-    'ngAnimate',
-    'ngUrlParser'
+    'ngAnimate'
   ])
   .config(function($sceDelegateProvider) {
     $sceDelegateProvider.resourceUrlWhitelist(['**']);
