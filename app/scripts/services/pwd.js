@@ -5,7 +5,7 @@ angular.module('yapp')
     var p = {
 
       assignSession: function() {
-       return $http.post('https://ee-beta.play-with-docker.com/workshops/65c3fa5c-3c97-4a81-bf47-ed8140061c35/session', {}, {headers: {'Accept': 'application/json'}}).then(function(response) {
+       return $http.post('https://ee-beta2.play-with-docker.com/workshops/ec3610ac-e21a-41f1-8cf3-5700790a4737/session', {}, {headers: {'Accept': 'application/json'}}).then(function(response) {
             return response.data.session_id;
         });
       },
@@ -15,8 +15,8 @@ angular.module('yapp')
         if (!sessionId) {
           return new Promise(function(resolve,reject){reject()});
         }
-        return $http.get('https://ee-beta.play-with-docker.com/sessions/' + sessionId).then(function(response) {
-          response.data.hostname = 'ee-beta.play-with-docker.com';
+        return $http.get('https://ee-beta2.play-with-docker.com/sessions/' + sessionId).then(function(response) {
+          response.data.hostname = 'ee-beta2.play-with-docker.com';
           return response.data;
         });
       },
@@ -25,7 +25,7 @@ angular.module('yapp')
       init: function(session) {
         // init the pwd session
         return  new Promise(function(resolve, reject) {
-          pwd.init(session.id, {baseUrl: 'https://ee-beta.play-with-docker.com'}, function() {
+          pwd.init(session.id, {baseUrl: 'https://ee-beta2.play-with-docker.com'}, function() {
             resolve();
           });
         });
