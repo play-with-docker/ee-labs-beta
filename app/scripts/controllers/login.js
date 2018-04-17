@@ -8,7 +8,7 @@
  * Controller of yapp
  */
 angular.module('yapp')
-  .controller('LoginCtrl', function($scope, $location, pwdService, $stateParams) {
+  .controller('LoginCtrl', function($scope, $location, pwdService, $stateParams, $window) {
 
     if (!$stateParams.aliId) {
       $window.location.href = 'https://dockr.ly/ee-followup';
