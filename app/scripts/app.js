@@ -24,7 +24,7 @@ angular
     $stateProvider
       .state('base', {
         abstract: true,
-        url: '',
+        url: '?aliId',
         templateUrl: 'views/base.html'
       })
         .state('login', {

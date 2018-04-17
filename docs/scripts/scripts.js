@@ -24,7 +24,7 @@ angular
     $stateProvider
       .state('base', {
         abstract: true,
-        url: '',
+        url: '?aliId',
         templateUrl: 'views/base.html'
       })
         .state('login', {
@@ -182,7 +182,12 @@ angular.module('yapp')
  * Controller of yapp
  */
 angular.module('yapp')
-  .controller('LoginCtrl', ["$scope", "$location", "pwdService", function($scope, $location, pwdService) {
+  .controller('LoginCtrl', ["$scope", "$location", "pwdService", "$stateParams", function($scope, $location, pwdService, $stateParams) {
+
+    if (!$stateParams.aliId) {
+      $window.location.href = 'https://dockr.ly/ee-followup';
+      return;
+    }
 
 
     pwdService.assignSession()
