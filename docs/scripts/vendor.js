@@ -52231,6 +52231,170 @@ angular.module('ui.router.state')
   .filter('includedByState', $IncludedByStateFilter);
 })(window, window.angular);
 /**
+ * Module for displaying "Waiting for..." dialog using Bootstrap
+ *
+ * @author Eugene Maslovich <ehpc@em42.ru>
+ */
+
+(function (root, factory) {
+	'use strict';
+
+	if (typeof define === 'function' && define.amd) {
+		define(['jquery'], function ($) {
+			return (root.waitingDialog = factory($));
+		});
+	}
+	else {
+		root.waitingDialog = root.waitingDialog || factory(root.jQuery);
+	}
+
+}(this, function ($) {
+	'use strict';
+
+	/**
+	 * Dialog DOM constructor
+	 */
+	function constructDialog($dialog) {
+		// Deleting previous incarnation of the dialog
+		if ($dialog) {
+			$dialog.remove();
+		}
+		return $(
+			'<div class="modal fade" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true" style="padding-top:15%; overflow-y:visible;">' +
+				'<div class="modal-dialog modal-m">' +
+					'<div class="modal-content">' +
+						'<div class="modal-header" style="display: none;"></div>' +
+						'<div class="modal-body">' +
+							'<div class="progress progress-striped active" style="margin-bottom:0;">' +
+								'<div class="progress-bar" style="width: 100%"></div>' +
+							'</div>' +
+						'</div>' +
+					'</div>' +
+				'</div>' +
+			'</div>'
+		);
+	}
+
+	var $dialog, // Dialog object
+		settings; // Dialog settings
+
+	return {
+		/**
+		 * Opens our dialog
+		 * @param message Custom message
+		 * @param options Custom options:
+		 *   options.headerText - if the option is set to boolean false,
+		 *     it will hide the header and "message" will be set in a paragraph above the progress bar.
+		 *     When headerText is a not-empty string, "message" becomes a content
+		 *     above the progress bar and headerText string will be set as a text inside the H3;
+		 *   options.headerSize - this will generate a heading corresponding to the size number. Like <h1>, <h2>, <h3> etc;
+		 *   options.headerClass - extra class(es) for the header tag;
+		 *   options.dialogSize - bootstrap postfix for dialog size, e.g. "sm", "m";
+		 *   options.progressType - bootstrap postfix for progress bar type, e.g. "success", "warning";
+		 *   options.contentElement - determines the tag of the content element.
+		 *     Defaults to "p", which will generate a <p> tag;
+		 *   options.contentClass - extra class(es) for the content tag.
+		 */
+		show: function (message, options) {
+			// Assigning defaults
+			if (typeof options === 'undefined') {
+				options = {};
+			}
+			if (typeof message === 'undefined') {
+				message = 'Loading';
+			}
+			settings = $.extend({
+				headerText: '',
+				headerSize: 3,
+				headerClass: '',
+				dialogSize: 'm',
+				progressType: '',
+				contentElement: 'p',
+				contentClass: 'content',
+				onHide: null, // This callback runs after the dialog was hidden
+				onShow: null // This callback runs after the dialog was shown
+			}, options);
+
+			var $headerTag, $contentTag;
+
+			$dialog = constructDialog($dialog);
+
+			// Configuring dialog
+			$dialog.find('.modal-dialog').attr('class', 'modal-dialog').addClass('modal-' + settings.dialogSize);
+			$dialog.find('.progress-bar').attr('class', 'progress-bar progress-bar-striped progress-bar-animated');
+			if (settings.progressType) {
+				$dialog.find('.progress-bar').addClass('progress-bar-' + settings.progressType);
+			}
+
+			// Generate header tag
+			$headerTag = $('<h' + settings.headerSize + ' />');
+			$headerTag.css({ 'margin': 0 });
+			if (settings.headerClass) {
+				$headerTag.addClass(settings.headerClass);
+			}
+
+			// Generate content tag
+			$contentTag = $('<' + settings.contentElement + ' />');
+			if (settings.contentClass) {
+				$contentTag.addClass(settings.contentClass);
+			}
+
+			if (settings.headerText === false) {
+				$contentTag.html(message);
+				$dialog.find('.modal-body').prepend($contentTag);
+			}
+			else if (settings.headerText) {
+				$headerTag.html(settings.headerText);
+				$dialog.find('.modal-header').html($headerTag).show();
+
+				$contentTag.html(message);
+				$dialog.find('.modal-body').prepend($contentTag);
+			}
+			else {
+				$headerTag.html(message);
+				$dialog.find('.modal-header').html($headerTag).show();
+			}
+
+			// Adding callbacks
+			if (typeof settings.onHide === 'function') {
+				$dialog.off('hidden.bs.modal').on('hidden.bs.modal', function () {
+					settings.onHide.call($dialog);
+				});
+			}
+			if (typeof settings.onShow === 'function') {
+				$dialog.off('shown.bs.modal').on('shown.bs.modal', function () {
+					settings.onShow.call($dialog);
+				});
+			}
+			// Opening dialog
+			$dialog.modal();
+		},
+		/**
+		 * Closes dialog
+		 */
+		hide: function () {
+			if (typeof $dialog !== 'undefined') {
+				$dialog.modal('hide');
+			}
+		},
+		/**
+		 * Changes or displays current dialog message
+		 */
+		message: function (newMessage) {
+			if (typeof $dialog !== 'undefined') {
+				if (typeof newMessage !== 'undefined') {
+					return $dialog.find('.modal-header>h' + settings.headerSize).html(newMessage);
+				}
+				else {
+					return $dialog.find('.modal-header>h' + settings.headerSize).html();
+				}
+			}
+		}
+	};
+
+}));
+
+/**
  * @license AngularJS v1.6.10
  * (c) 2010-2018 Google, Inc. http://angularjs.org
  * License: MIT
@@ -56388,5 +56552,3 @@ angular.module('ngAnimate', [], function initAngularHelpers() {
 
 
 })(window, window.angular);
-
-!function(e,d){"use strict";"function"==typeof define&&define.amd?define(["jquery"],function(a){return e.waitingDialog=d(a)}):e.waitingDialog=e.waitingDialog||d(e.jQuery)}(this,function(e){"use strict";function d(d){return d&&d.remove(),e('<div class="modal fade" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true" style="padding-top:15%; overflow-y:visible;"><div class="modal-dialog modal-m"><div class="modal-content"><div class="modal-header" style="display: none;"></div><div class="modal-body"><div class="progress progress-striped active" style="margin-bottom:0;"><div class="progress-bar" style="width: 100%"></div></div></div></div></div></div>')}var a,o;return{show:function(n,i){"undefined"==typeof i&&(i={}),"undefined"==typeof n&&(n="Loading"),o=e.extend({headerText:"",headerSize:3,headerClass:"",dialogSize:"m",progressType:"",contentElement:"p",contentClass:"content",onHide:null,onShow:null},i);var s,t;a=d(a),a.find(".modal-dialog").attr("class","modal-dialog").addClass("modal-"+o.dialogSize),a.find(".progress-bar").attr("class","progress-bar progress-bar-striped progress-bar-animated"),o.progressType&&a.find(".progress-bar").addClass("progress-bar-"+o.progressType),s=e("<h"+o.headerSize+" />"),s.css({margin:0}),o.headerClass&&s.addClass(o.headerClass),t=e("<"+o.contentElement+" />"),o.contentClass&&t.addClass(o.contentClass),o.headerText===!1?(t.html(n),a.find(".modal-body").prepend(t)):o.headerText?(s.html(o.headerText),a.find(".modal-header").html(s).show(),t.html(n),a.find(".modal-body").prepend(t)):(s.html(n),a.find(".modal-header").html(s).show()),"function"==typeof o.onHide&&a.off("hidden.bs.modal").on("hidden.bs.modal",function(){o.onHide.call(a)}),"function"==typeof o.onShow&&a.off("shown.bs.modal").on("shown.bs.modal",function(){o.onShow.call(a)}),a.modal()},hide:function(){"undefined"!=typeof a&&a.modal("hide")},message:function(e){return"undefined"!=typeof a?"undefined"!=typeof e?a.find(".modal-header>h"+o.headerSize).html(e):a.find(".modal-header>h"+o.headerSize).html():void 0}}});

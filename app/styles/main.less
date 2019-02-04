@@ -24,7 +24,7 @@
 }
 
 html,body {
-	overflow: hidden;
+  overflow: hidden;
 }
 
 .introjs-helperLayer {
@@ -33,4 +33,60 @@ html,body {
 
 .captcha > div {
   margin: 0 auto;
+}
+
+.feedback {
+  bottom: 0;
+  margin-bottom: 20px;
+}
+
+.close {
+  opacity: 1;
+  color: white;
+}
+
+.modal-body {
+  padding-left: 40px;
+  padding-right: 40px;
+  padding-bottom: 0px;
+}
+
+.modal-header {
+  background-color: #3ca2e0;
+}
+
+textarea.form-control {
+  height: 200px;
+}
+
+.modal-footer {
+  border-top: none;
+  margin-bottom: 15px;
+  padding-right: 40px;
+
+  .feedback-result {
+    font-size: 16px;
+    text-align: left;
+    float: left;
+    margin-left: 40px;
+    margin-top: 15px;
+  }
+
+  .feedback-success {
+    color: #3cae07;
+  }
+
+  .feedback-fail {
+    color: red;
+  }
+
+
+  i {
+    font-size: 20px;
+  }
+
+  h4 {
+    display: inline;
+  }
+
 }

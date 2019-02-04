@@ -121,10 +121,21 @@ angular.module('yapp')
 
     $scope.instances = [];
 
+    $scope.feedback = "";
+
+    $scope.feedbackSent;
+
     $scope.$state = $state;
     $scope.dtrHost=""
     $scope.ucpHost=""
     $scope.winHost=""
+
+    jQuery('#feedbackModal').on('hidden.bs.modal', function (e) {
+      $scope.$apply(function(){
+        $scope.feedbackSent = null;
+        $scope.feedback = "";
+      });
+    });
 
     pwdService.getSession().then(function(session) {
       pwdService.init(session).then(function() {
@@ -152,6 +163,23 @@ angular.module('yapp')
     $scope.openUCP = function() {
       $window.open('https://' + $scope.ucpHost, '_blank');
     }
+
+    $scope.sendFeedback = function() {
+      var $btn = jQuery('#feedbackSubmit').button('loading');
+      doorbell.send($scope.feedback, "feedback@pwd.com", function() {
+        $scope.$apply(function(){
+          $scope.feedbackSent = true;
+          $scope.feedback = "";
+          $btn.button('reset');
+        });
+      }, function() {
+        $scope.$apply(function(){
+          $scope.feedbackSent = false;
+          $btn.button('reset');
+        });
+      });
+    }
+
 
     $scope.showInstance = function(instance) {
       $scope.selectedInstance = instance;

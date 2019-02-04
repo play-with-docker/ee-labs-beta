@@ -11,10 +11,43 @@
                     <a ng-click="openDTR()" class="btn btn-white btn-outline btn-rounded btn-lg">DTR <i class="fa fa-external-link"></i></a>
                 </div>
 
-                <ul class="nav nav-sidebar" style="margin-bottom: 50px;">
+                <ul class="nav nav-sidebar">
                     <li ng-class="{'active': selectedInstance == instance }" ng-repeat="instance in instances track by instance.name" ng-click="showInstance(instance)" ><a>{{instance.hostname}} </a></li>
                 </ul>
 
+                <!--<button type="button" data-toggle="modal" data-target="#myModalLabel" class="btn btn-white btn-outline btn-rounded btn-lg"></button>-->
+                <!-- Button trigger modal -->
+                <div class="text-center feedback">
+                    <button type="button" class="btn btn-white btn-outline btn-rounded btn-lg feedback text-center" data-backdrop="false" data-toggle="modal" data-target="#feedbackModal">
+                       Report an issue  &nbsp;<i class="fa fa-exclamation-circle"></i>
+                    </button>
+                </div>
+
+                <div id="feedbackModal" class="modal fade text-center" tabindex="-1" role="dialog" aria-labelledby="feedbackLabel">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times" aria-hidden="true"></i></button>
+                                <h3 class="modal-title" id="feedbackLabel">Send us your feedback</h4>
+                                <h4 style="padding: 0px 40px 0px 40px;">Do you have an issue or found a bug? Let us know in the field below.</h4>
+                            </div>
+                            <form ng-submit="sendFeedback()">
+                                <div class="modal-body">
+                                        <textarea ng-model="feedback" required  class="form-control" rows="3" placeholder="Describe your experience here..."></textarea>
+                                </div>
+                                <div class="modal-footer">
+                                    <div class="feedback-result">
+                                        <span ng-if="feedbackSent == true" class="feedback-success"><i class="fa fa-check-circle"></i> &nbsp; <h4>Thank you for your feedback :)</h4></span>
+                                        <span ng-if="feedbackSent == false" class="feedback-fail"><i class="fa fa-times-circle"></i> &nbsp; <h4>Oops, please try submitting again.</h4></span>
+                                    </div>
+                                    <button type="submit" data-loading-text="Sending..." id="feedbackSubmit" class="btn btn-primary btn-lg">Send &nbsp;<i class="fa fa-send"></i></button>
+                                </div>
+                            </form>
+
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal-dialog -->
+                </div><!-- /.modal -->
             </div>
             <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
                 <div class="jumbotron">
@@ -51,5 +84,7 @@
             </div>
         </div>
     </div>
+
+    <!-- /.modal -->
 </div>
 </div>
